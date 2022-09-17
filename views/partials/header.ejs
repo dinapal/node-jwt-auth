@@ -12,8 +12,11 @@
       <li>
         <% if(user){ %> 
           Welcome, 
+          <% if(user.name){ %> 
+          <%= user.name %>
+        <% }else{ %> 
           <%= user.email %>
-        <% } %> 
+        <% } } %> 
       </li>
       <% if(user){ %> 
         <li><a href="/logout">logout</a></li>

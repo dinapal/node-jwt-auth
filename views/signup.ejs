@@ -2,9 +2,14 @@
 
 <form action="/signup" method="post">
   <h2>signup</h2>
+  <label for="name">Name</label>
+  <input type="text" name="name" id="name" placeholder="Enter name" required>
+  <div class="error name"></div>
+
   <label for="email">email</label>
   <input type="text" name="email" id="email" placeholder="Enter Email" required>
   <div class="error email"></div>
+
   <label for="password">Password</label>
   <input type="password" name="password" id="password" placeholder="Enter password" required>
   <div class="error password"></div>
@@ -13,6 +18,7 @@
 
 <script>
   const signupForm = document.querySelector("form");
+  const nameErr = document.querySelector('.name.error');
   const emailErr = document.querySelector('.email.error');
   const passwordErr = document.querySelector('.password.error');
   try{
@@ -20,14 +26,16 @@
     event.preventDefault();
 
     // Reset Errors
+    nameErr.textContent = '';
     emailErr.textContent = '';
     passwordErr.textContent = '';
 
+    const name = signupForm.name.value;
     const email = signupForm.email.value;
     const password = signupForm.password.value;
     const user = await fetch('/signup', {
       method: "POST",
-      body:JSON.stringify({email, password}),
+      body:JSON.stringify({name, email, password}),
       headers: {
         "Content-Type": "application/json",
       }
@@ -35,6 +43,7 @@
 
     const data = await user.json();
     if(data.errors){
+      nameErr.textContent = data.errors.name;
       emailErr.textContent = data.errors.email;
       passwordErr.textContent = data.errors.password;
     }
